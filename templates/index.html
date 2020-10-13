@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>University Student GPA (Ist Semester) Prediction System</title>
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="{{ url_for('static',filename='styles/mystyle.css') }}" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="http://use.fontawsome.com/releases/v5.0.8/js/all.js"></script>
+  <script src="{{ url_for('static',filename='js/myscript.js') }}"></script>
+</head>
+
+<body style="
+      background: url(../static/images/gpa-prediction-system_background.jpg);
+      background-size: cover;
+      background-position: center;
+    ">
+  <!-- Main div -->
+  <div class="container mt-5 mb-5">
+    <div class="row">
+      <!-- Left Card for Project Introduction -->
+      <div class="card col-lg-7 text-center" style="color: white; background: rgba(0, 0, 0, 0.7)">
+        <h1 class="m-5">
+          <strong>University Student GPA (1st Semester) Prediction System</strong>
+        </h1>
+
+        <!-- Salutaion -->
+        <p class="ml-5" style="font-weight: bolder; color: green; text-align: left">
+          Asslam-o-Alaikum !
+        </p>
+
+        <!-- Instructions -->
+        <ul class="ml-4 mr-4" style="text-align: justify">
+          <li>
+            According to a study round 46% of University students drop out in 1st year
+          </li>
+
+          <li>
+            The main aim of the GPA Prediction System is to predict the GPA (1st Semester) of University Students based
+            on their Marks in Matric and FSc
+          </li>
+        </ul>
+
+        <!-- Read Instructions button -->
+        <button class="btn btn-secondary mt-4" style="width: 200px; margin-left: 50px; margin-bottom: 50px"
+          data-toggle="modal" data-target="#instructionmodal">
+          Read Instructions
+        </button>
+      </div>
+
+      <!-- Right Card for System Inputs -->
+      <div class="col-lg-5 text-center" style="background: rgba(247, 223, 227, 0.7)">
+        <div>
+          <h2 class="m-5" style="color: black">
+            <strong>Predict GPA (1st Semester)</strong>
+          </h2>
+        </div>
+
+        <div id="inputs-form">
+          <form name="inputForm" action="/" method="POST" onsubmit="return validateForm()">
+            <!-- Matric Marks Input -->
+            <div class="form-group row">
+              <label class="col-lg-4 col-4 offset-lg-1 col-form-label" style="font-weight: bolder; 
+                font-size: large">
+                Matric Marks<br>(0 - 1100):
+              </label>
+              <div class="col-lg-6 col-xl-5 col-6">
+                <input type="text" name="matricmarks" id="matricmarks" style="
+                text-align: center;
+                width: 100%;
+                border-radius: 25px;
+                background: rgb(0, 0, 0, 0.5);
+                border-width: 3px;
+                border-color: #f0526c;
+                color: white;
+                height: 40px;"
+                oninput="checkInput(this)"
+                >
+                <label style="font-size: small;
+                color: #f0526c;"
+                id="alertLabelMatric">
+                </label>
+              </div>
+            </div>
+
+            <!-- FSc Marks Input -->
+            <div class="form-group row">
+              <label class="col-lg-4 col-4 offset-lg-1 col-form-label" style="
+              font-weight: bolder;
+              font-size: large">
+                FSc Marks<br>(0 - 1100):
+              </label>
+              <div class="col-lg-6 col-xl-5 col-6">
+                <input type="text" name="fscmarks" id="fscmarks" style="
+                text-align: center;
+                width: 100%;
+                border-radius: 25px;
+                background: rgb(0, 0, 0, 0.5);
+                border-width: 3px;
+                border-color: #f0526c;
+                color: white;
+                height: 40px;"
+                oninput="checkInput(this)"
+                >
+                <label style="font-size: small;
+                color: #f0526c;"
+                id="alertLabelFsc">
+              </div>
+            </div>
+
+            <!-- Predict Button -->
+            <div class="form-group row mt-5">
+              <div class="col-lg-8 offset-lg-2 col-9 offset-1 mb-5">
+                <button
+                type="submit"
+                class="btn btn-success"
+                id="calculateButton"
+                style="width: 100%"
+                onclick="javascript: document.getElementById('alertLabelMatric').innerHTML='';
+                document.getElementById('alertLabelFsc').innerHTML='';"
+                >
+                  Predict GPA
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Result Modal -->
+      <div class="modal fade" id="resultmodal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" style="margin-left: 26%; margin-right: 17%">
+                <strong>Model Prediction</strong>
+              </h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body text-center">
+              <button class="btn btn-success" type="button" data-toggle="collapse" data-target=".multi-collapse"
+                aria-expanded="false" aria-controls="multiCollapseExample1 multiCollapseExample2" id="inputhandler">
+                Click to view inputs
+              </button>
+
+              <!-- Display of inputs Prediction Result Modal -->
+              <div class="row mt-3">
+                <div class="col-6">
+                  <div class="collapse multi-collapse" id="multiCollapseExample1">
+                    <div class="card">
+                      <div class="card-header" style="background-color: #009cff; color: white">
+                        <strong>Matric Marks</strong>
+                      </div>
+                      <div class="card-body">{{matricmarks}}</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="collapse multi-collapse" id="multiCollapseExample2">
+                    <div class="card">
+                      <div class="card-header" style="background-color: #009cff; color: white">
+                        <strong>FSc Marks</strong>
+                      </div>
+                      <div class="card-body">{{fscmarks}}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row mt-3 collapse multi-collapse">
+                <i class="fa fa-arrow-down" style="padding-left: 43%; font-size: 70px"></i>
+              </div>
+
+              <!-- Display of predicted result -->
+              <div class="result-box mt-3">
+                <p id="result" style="font-size: large;"><b>{{predicted_result}}</b></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Instruction Modal -->
+      <div class="modal fade" id="instructionmodal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" style="margin-left: 35%">
+                <strong>Instructions</strong>
+              </h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="w-100 text-center" style="background: #009cff; color: white; height: 50px">
+                <h5 style="padding-top: 10px">Input Attributes Details</h5>
+              </div>
+
+              <!-- Collapsable System Input Attributes in Instruction Modal -->
+              <div id="accordion">
+
+
+                <div class="card mt-1" style="background: rgb(173, 170, 170)">
+                  <div class="card-header" id="matricheading" style="
+              display: inline-flex;
+              height: 40px;
+              align-content: center;
+              cursor: pointer;
+            " data-toggle="collapse" data-target="#matriccollapse" aria-expanded="false" aria-controls="collapseOne">
+                    <i class="fa fa-plus-circle">
+                      <b class="ml-3" style="font-family: sans-serif">Matric Marks</b>
+                    </i>
+                  </div>
+
+                  <div id="matriccollapse" class="collapse" aria-labelledby="matricheading" style="background: white"
+                    data-parent="#accordion">
+                    <div class="card-body">
+                      Possible Values of Matric Marks are :
+                      <ul>
+                        <li>The Marks of the Student in Matric should range between 0 to 1100</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card mt-1" style="background: rgb(173, 170, 170)">
+                  <div class="card-header" id="fscheading" style="
+              display: inline-flex;
+              height: 40px;
+              align-content: center;
+              cursor: pointer;
+            " data-toggle="collapse" data-target="#fsccollapse" aria-expanded="false" aria-controls="collapseOne">
+                    <i class="fa fa-plus-circle">
+                      <b class="ml-3" style="font-family: sans-serif">FSc Marks</b>
+                    </i>
+                  </div>
+
+                  <div id="fsccollapse" class="collapse" aria-labelledby="fscheading" style="background: white"
+                    data-parent="#accordion">
+                    <div class="card-body">
+                      Possible Values of FSc Marks are :
+                      <ul>
+                        <li>The Marks of the Student in FSc should range between 0 to 1100</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+
+              </div>
+
+              <div class="w-100 text-center mt-3" style="background: #009cff; color: white; height: 50px">
+                <h5 style="padding-top: 10px">Steps to Follow</h5>
+              </div>
+
+              <!-- Steps of Prediction -->
+              <div class="mt-3 ml-3">
+                <span style="font-weight: bolder">Step 1 : </span> Enter
+                Marks in
+                <span style="font-weight: bolder; color: #009cff">Matric and Fsc </span><br />
+                <span style="font-weight: bolder">Step 2 : </span> Click on
+                <span style="font-weight: bolder; color: #009cff">Predict GPA</span>
+                Button<br />
+                <span style="font-weight: bolder">Step 3 : </span>
+                Our University Student GPA (Ist Semester) Prediction System will predict the
+                <span style="font-weight: bolder; color: green">GPA of Student in 1st Semester</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Copyrights -->
+  <footer style="color: black; text-align: center">
+    <b>Copyrights &copy; 2020</b>
+    <a href="https://www.linkedin.com/in/atif-raza-chaudary-7028a8154/" target="_blank" style="color: #f0526c"><b>Atif Raza
+        Chaudary</b></a>
+    <b>| All Rights Reserved</b>
+  </footer>
+
+  <script>
+
+
+    // Handling of Result modal to be displayed
+    window.onload = function () {
+      if (document.getElementById("result").innerText) {
+        $("#resultmodal").modal("show");
+      }
+    };
+
+    // Making dropdown border as green when the value of attribute is changed
+    function checkInput(element) {
+      if (element.value != "") {
+        element.style.borderColor = "green"; //change color to green
+      }
+    }
+
+    // Handle Matric Marks collapse on click
+    $("#matricheading").click(function () {
+      if ($("#matricheading").attr("aria-expanded") == "false") {
+        $("#matricheading i").removeClass("fa-plus-circle");
+        $("#matricheading i").addClass("fa-minus-circle");
+      }
+      if ($("#matricheading").attr("aria-expanded") == "true") {
+        $("#matricheading i").removeClass("fa-minus-circle");
+        $("#matricheading i").addClass("fa-plus-circle");
+      }
+    });
+
+    // Handle FSc Marks collapse on click
+    $("#fscheading").click(function () {
+      if ($("#fscheading").attr("aria-expanded") == "false") {
+        $("#fscheading i").removeClass("fa-plus-circle");
+        $("#fscheading i").addClass("fa-minus-circle");
+      }
+      if ($("#fscheading").attr("aria-expanded") == "true") {
+        $("#fscheading i").removeClass("fa-minus-circle");
+        $("#fscheading i").addClass("fa-plus-circle");
+      }
+    });
+
+    $( "#result" )
+      .contents()
+        .filter(function(){
+          var gpa = '{{ output }}';
+          var matric_marks = '{{ matricmarks }}'
+          var fsc_marks = '{{ fscmarks }}'
+          if (gpa != ""){
+            let speech = new SpeechSynthesisUtterance();
+            speech.lang = "en-US";
+            speech.text = ['In First Semester!','Student GPA Will be!',gpa,"! if student has",matric_marks,"marks in matric! and",fsc_marks,'Marks in FSC'].join(" ");
+            speech.volume = 1;
+            speech.rate = 1;
+            speech.pitch = 1;
+          
+            window.speechSynthesis.speak(speech);
+          }           
+        })
+
+    function validateForm() {
+      let speech = new SpeechSynthesisUtterance();
+      speech.lang = "en-US";
+      speech.volume = 1;
+      speech.rate = 1;
+      speech.pitch = 1;  
+      
+      var matric_marks = document.forms["inputForm"]["matricmarks"].value;
+      var numbers = /^[0-9]+$/;
+      var fsc_marks = document.forms["inputForm"]["fscmarks"].value;
+      var flag = 0;
+
+      //Matric Marks Validation
+      if (matric_marks == "") {
+        speech.text = "Please Enter! Matric Marks";
+        window.speechSynthesis.speak(speech);
+        document.getElementById("alertLabelMatric").innerHTML = "<b>* Please fill out this field</b>";
+        flag = flag + 1;
+      }
+      if (matric_marks<0 | matric_marks>1100){         
+        speech.text = "Invalid Marks! Matric Marks Shuld be between! 0 and 1100";
+        window.speechSynthesis.speak(speech);
+        document.getElementById("alertLabelMatric").innerHTML = "<b>* Invalid Marks. Matric Marks should be between 0 and 1100</b>";
+        flag = flag + 1;
+        if (fsc_marks<0 | fsc_marks>1100){
+          document.getElementById('matricmarks').value = null;
+          document.getElementById('fscmarks').value = null;
+          document.getElementById('matricmarks').focus();
+      }else{
+          document.getElementById('matricmarks').value = null;
+          document.getElementById('matricmarks').focus();
+      }
+    }
+      if(!matric_marks.match(numbers) & matric_marks!=""){
+        speech.text = "Matric Marks! must be a number";
+        window.speechSynthesis.speak(speech);
+        document.getElementById("alertLabelMatric").innerHTML = "<b>* Please enter a Number</b>";
+        flag = flag + 1;
+      }
+
+      //FSc Marks Validation
+      if (fsc_marks == "") {
+        speech.text = "Please Enter! FSC Marks";
+        window.speechSynthesis.speak(speech);
+        document.getElementById("alertLabelFsc").innerHTML = "<b>* Please fill out this field</b>";
+        flag = flag + 1;
+      }
+      if (fsc_marks<0 | fsc_marks>1100){         
+        speech.text = "Invalid Marks! FSC Marks Shuld be between! 0 and 1100";
+        window.speechSynthesis.speak(speech);
+        document.getElementById("alertLabelFsc").innerHTML = "<b>* Invalid Marks. FSc Marks should be between 0 and 1100</b>";
+        flag = flag + 1;
+        if (matric_marks<0 | matric_marks>1100){
+          document.getElementById('matricmarks').value = null;
+          document.getElementById('fscmarks').value = null;
+          document.getElementById('matricmarks').focus();
+      }else{
+          document.getElementById('fscmarks').value = null;
+          document.getElementById('fscmarks').focus();
+      }
+      }
+      if(!fsc_marks.match(numbers) & fsc_marks!=""){
+        speech.text = "FSc Marks! must be a number";
+        window.speechSynthesis.speak(speech);
+        document.getElementById("alertLabelFsc").innerHTML = "<b>* Please enter a Number</b>";
+        flag = flag + 1;
+      }
+      if (flag>0){
+        return false;
+      }
+      if (flag==0){
+        return true;
+      }
+}
+  </script>
+</body>
+
+</html>
