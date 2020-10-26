@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>University Student GPA (Ist Semester) Prediction System</title>
+  <title>University Student GPA (1st Semester) Prediction System</title>
 
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -46,6 +46,9 @@
             The main aim of the GPA Prediction System is to predict the GPA (1st Semester) of University Students based
             on their Marks in Matric and FSc
           </li>
+          <li>
+            <b>Docomentation Link: <a href="https://ilmoirfan.com/gpa-prediction-system/" target="_blank"> https://ilmoirfan.com/</a></b>
+          </li>
         </ul>
 
         <!-- Read Instructions button -->
@@ -67,7 +70,7 @@
           <form name="inputForm" action="/" method="POST" onsubmit="return validateForm()">
             <!-- Matric Marks Input -->
             <div class="form-group row">
-              <label class="col-lg-4 col-4 offset-lg-1 col-form-label" style="font-weight: bolder; 
+              <label class="col-lg-4 col-4 offset-lg-1 col-form-label" style="font-weight: bolder;
                 font-size: large">
                 Matric Marks<br>(0 - 1100):
               </label>
@@ -283,11 +286,69 @@
     </div>
   </div>
 
+  <!-- Development Team -->
+  <div class="container-fluid" style="color: black; background: rgba(0, 0, 0, 0.7);">
+
+	<div class="container padding">
+		<div class="row welcome text-center" data-aos="fade-up">
+			<div class="col-12">
+				<h1 class="display-4" style="color: white;margin-bottom: 20px;"><b>Our Team</b></h1>
+			</div>
+			<hr>
+		</div>
+	</div>
+
+	<!--- Card -->
+	<div class="container padding">
+		<div class="row padding"  data-aos="fade-up">
+
+
+    <div class="col-md-4">
+				<div class="card" style="width: 18rem;margin-bottom: 50px;">
+					<img class="card-img-top" src="../static/images/atif.jpg" alt="Card image cap">
+					<div class="card-body">
+						<h5 class="card-title">Atif Raza Chaudary</h5>
+						<p class="card-text"><b>Area of Interest:</b> Data Science, Machine Learning, Web Scraping, Python Developer, Php Laraval</p>
+						<a href="https://www.linkedin.com/in/atif-raza-chaudary-7028a8154/" target="blank" class="btn btn-info btn-sm">See
+							Profile</a>
+					</div>
+				</div>
+      </div>
+
+      <div class="col-md-4">
+				<div class="card" style="width: 18rem;margin-bottom: 50px;">
+					<img class="card-img-top" src="../static/images/asghar.jpeg " alt="Card image cap">
+					<div class="card-body">
+						<h5 class="card-title">Asghar Afzal</h5>
+						<p class="card-text"><b>Area of Interest: </b>Data Science, Machine Learning, Python Developer, Django</p>
+						<a href="https://www.linkedin.com/in/asghar-afzal-125b6418b/" target="blank" class="btn btn-info btn-sm">See
+							Profile</a>
+					</div>
+				</div>
+      </div>
+
+
+
+      <div class="col-md-4">
+				<div class="card" style="width: 18rem;margin-bottom: 50px;">
+					<img class="card-img-top" src="../static/images/asad.jpg" alt="Card image cap">
+					<div class="card-body">
+						<h5 class="card-title">Muhammad Asad</h5>
+						<p class="card-text"><b>Area of Interest: </b>Data Science, Python Developer, Meachine Learning, Flask<p>
+						<a href="https://www.linkedin.com/in/muhammad-asad-a15008165/" target="blank" class="btn btn-info btn-sm">See
+							Profile</a>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
   <!-- Copyrights -->
   <footer style="color: black; text-align: center">
     <b>Copyrights &copy; 2020</b>
-    <a href="https://www.linkedin.com/in/atif-raza-chaudary-7028a8154/" target="_blank" style="color: #f0526c"><b>Atif Raza
-        Chaudary</b></a>
+    <a href="index.html" target="_blank" style="color: #f0526c"><b>Triple A</b></a>
     <b>| All Rights Reserved</b>
   </footer>
 
@@ -345,9 +406,9 @@
             speech.volume = 1;
             speech.rate = 1;
             speech.pitch = 1;
-          
+
             window.speechSynthesis.speak(speech);
-          }           
+          }
         })
 
     function validateForm() {
@@ -355,8 +416,8 @@
       speech.lang = "en-US";
       speech.volume = 1;
       speech.rate = 1;
-      speech.pitch = 1;  
-      
+      speech.pitch = 1;
+
       var matric_marks = document.forms["inputForm"]["matricmarks"].value;
       var numbers = /^[0-9]+$/;
       var fsc_marks = document.forms["inputForm"]["fscmarks"].value;
@@ -369,7 +430,7 @@
         document.getElementById("alertLabelMatric").innerHTML = "<b>* Please fill out this field</b>";
         flag = flag + 1;
       }
-      if (matric_marks<0 | matric_marks>1100){         
+      if (matric_marks<0 | matric_marks>1100){
         speech.text = "Invalid Marks! Matric Marks Shuld be between! 0 and 1100";
         window.speechSynthesis.speak(speech);
         document.getElementById("alertLabelMatric").innerHTML = "<b>* Invalid Marks. Matric Marks should be between 0 and 1100</b>";
@@ -397,7 +458,7 @@
         document.getElementById("alertLabelFsc").innerHTML = "<b>* Please fill out this field</b>";
         flag = flag + 1;
       }
-      if (fsc_marks<0 | fsc_marks>1100){         
+      if (fsc_marks<0 | fsc_marks>1100){
         speech.text = "Invalid Marks! FSC Marks Shuld be between! 0 and 1100";
         window.speechSynthesis.speak(speech);
         document.getElementById("alertLabelFsc").innerHTML = "<b>* Invalid Marks. FSc Marks should be between 0 and 1100</b>";
